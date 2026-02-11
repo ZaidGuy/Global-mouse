@@ -11,6 +11,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false  # [新增这一行] 关掉连坐机制，一台失败不影响另一台
       matrix:
         # 同时启动一台 Windows 和一台 macOS 服务器
         os: [windows-latest, macos-latest]
