@@ -64,17 +64,17 @@ cd Global-mouse
 # 使用 uv 极速同步环境依赖
 uv sync
 
----
+
 ```
 
 2. 本地运行测试
 ```bash
 uv run main.py
----
+
 3. CI/CD 自动化构建
 本项目已配置完整的 GitHub Actions 工作流。只需向主分支推送一个带有 v*.*.* 格式的 Tag，云端双平台服务器即可全自动编译打包并发布 Release！
 
----
+
 ```
 ### 🤝 贡献与反馈
 如果你发现了 Bug，请提交 Issue。
