@@ -14,7 +14,7 @@ jobs:
       matrix:
         # 将 macos-latest 改为 macos-13 (Intel 架构)
         # ubuntu-latest 和 windows-latest 保持不变
-        os: [windows-latest, macos-13, ubuntu-latest]
+        os: [windows-latest, macos-14, ubuntu-latest]
 
     steps:
       - name: 检出代码 (Checkout Code)
@@ -42,20 +42,22 @@ jobs:
 
       # --- macOS 构建 (DMG) ---
       - name: 构建 macOS 版本
-        if: matrix.os == 'macos-13'
+        if: matrix.os == 'macos-14'
         run: |
-          # 1. 正常的 Nuitka 构建 (去掉了报错的 --macos-universal)
+          # 1. 强制指定架构为 x86_64，确保 Intel Mac 也能用
+          # 如果你的测试机是 M1/M2，就把 x86_64 改成 arm64
           uv run python -m nuitka \
             --assume-yes-for-downloads \
             --standalone \
             --macos-create-app-bundle \
+            --macos-target-arch=x86_64 \
             --enable-plugin=pyside6 \
             --macos-app-icon=logo.icns \
             --macos-app-name="Global Mouse" \
             --output-dir=build_out \
             main.py
           
-          # 2. 手动重命名
+          # 2. 重命名
           mv build_out/main.app "build_out/Global Mouse.app"
           
           # 3. 安装工具并打包
@@ -70,7 +72,7 @@ jobs:
             --app-drop-link 425 120 \
             "Global_Mouse_Mac.dmg" \
             "build_out/Global Mouse.app/"
-
+            
       # --- Linux 构建 (AppImage) ---
       - name: 构建 Linux 版本 (AppImage)
         if: matrix.os == 'ubuntu-latest'
