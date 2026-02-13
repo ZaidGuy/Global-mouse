@@ -616,19 +616,34 @@ class MainWindow(QMainWindow):
         self.overlay.hide()
 
     def start_threads(self):
+        # 1. 启动窗口侦测（通常不会崩）
         try:
             self.window_monitor = WindowMonitor()
             self.window_monitor.start()
-            
-            # [新增] 启动键盘监听
+        except Exception: pass
+
+        # 2. 启动键盘监听（高危：涉及底层钩子）
+        try:
             self.key_manager = KeyboardManager(lambda: self.bridge.toggle_horizontal.emit())
             self.key_manager.start()
-            
+        except Exception as e:
+            print(f"Keyboard Hook Failed: {e}") # 这里的 print 在 Nuitka 无控制台模式下会被忽略
+
+        # 3. 启动鼠标监听（极高危：最容易被沙盒拦截导致崩溃）
+        try:
             self.listener = mouse.Listener(on_click=self.on_click)
             self.listener.start()
+        except Exception as e:
+            # 如果启动失败，不要让程序崩溃，而是弹窗告诉用户（或审核员）
+            self.ui_widgets["enable_horizontal"].setChecked(False) # 临时禁用功能
+            QMessageBox.critical(self, "权限不足", 
+                "无法启动鼠标拦截服务。\n\n这通常是因为缺少 'runFullTrust' 权限。\n请确保已在应用商店/系统设置中授予此权限。")
+            
+        # 4. 启动滚动计算线程
+        try:
             self.scroller = threading.Thread(target=self.scroll_loop, daemon=True)
             self.scroller.start()
-        except Exception as e: pass
+        except Exception: pass
 
     def is_current_app_allowed(self):
         if cfg.disable_fullscreen and cfg.is_fullscreen: return False
@@ -691,18 +706,36 @@ class MainWindow(QMainWindow):
                 time.sleep(0.05)
 
 if __name__ == "__main__":
-    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    app = QApplication(sys.argv)
-    
-    if OS_NAME == "Windows":
-        myappid = 'adai.globalmouse.app.v3' 
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+    try:
+        # --- 原有的启动逻辑 ---
+        QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+        app = QApplication(sys.argv)
+        
+        if OS_NAME == "Windows":
+            myappid = 'adai.globalmouse.app.v3' 
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
-    app.setQuitOnLastWindowClosed(False)
+        app.setQuitOnLastWindowClosed(False)
 
-    font_name = ".AppleSystemUIFont" if OS_NAME == "Darwin" else "Segoe UI"
-    app.setFont(QFont(font_name, 11 if OS_NAME == "Windows" else 13))
-    
-    window = MainWindow()
-    if not cfg.start_minimized: window.show()
-    sys.exit(app.exec())
+        font_name = ".AppleSystemUIFont" if OS_NAME == "Darwin" else "Segoe UI"
+        app.setFont(QFont(font_name, 11 if OS_NAME == "Windows" else 13))
+        
+        window = MainWindow()
+        if not cfg.start_minimized: window.show()
+        sys.exit(app.exec())
+        # ---------------------
+        
+    except Exception as e:
+        # 发生致命崩溃时，在用户的【文档】目录下生成 crash_log.txt
+        import traceback
+        log_path = os.path.join(os.path.expanduser("~"), "Documents", "GlobalMouse_Crash_Log.txt")
+        with open(log_path, "w", encoding="utf-8") as f:
+            f.write(f"Crash Time: {time.ctime()}\n")
+            f.write(f"Error: {str(e)}\n")
+            f.write(traceback.format_exc())
+        
+        # 尝试弹窗（虽然崩溃时弹窗不一定能出来，但值得一试）
+        try:
+            ctypes.windll.user32.MessageBoxW(0, f"程序遇到致命错误，日志已保存至:\n{log_path}", "Global Mouse Crash", 16)
+        except: pass
+        sys.exit(1)
